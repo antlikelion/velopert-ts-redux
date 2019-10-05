@@ -1,19 +1,8 @@
 import React from "react";
+import useCounter from "../hooks/useCounter";
 
-type CounterProps = {
-  count: number;
-  onIncrease: () => void;
-  onDecrease: () => void;
-  onIncreaseBy: (diff: number) => void;
-};
-
-// 컴포넌트에서 필요한 값과 함수들을 모두 props로 받아오도록 처리
-function Counter({
-  count,
-  onIncrease,
-  onDecrease,
-  onIncreaseBy
-}: CounterProps) {
+function Counter() {
+  const { count, onIncrease, onDecrease, onIncreaseBy } = useCounter();
   return (
     <div>
       <h1>{count}</h1>
