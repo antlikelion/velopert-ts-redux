@@ -19,6 +19,7 @@ function TodoInsert() {
         value={value}
         onChange={onChange}
       />
+      <button type="submit">등록</button>
     </form>
   );
 }
