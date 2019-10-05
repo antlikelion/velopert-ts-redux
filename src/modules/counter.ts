@@ -1,22 +1,24 @@
-const INCREASE = "counter/INCREASE" as const;
-const DECREASE = "counter/DECREASE" as const;
-const INCREASE_BY = "counter/INCREASE_BY" as const;
+import Counter from "../components/Counter";
+import {
+  createStandardAction,
+  ActionType,
+  createReducer
+} from "typesafe-actions";
 
-export const increase = () => ({ type: INCREASE });
-export const decrease = () => ({ type: DECREASE });
-export const increaseBy = (diff: number) => ({
-  type: INCREASE_BY,
-  payload: diff
-});
-// 함수명에 커서 올려서 type을 확인해보셈 string이 아님(as const 덕분임)
+const INCREASE = "counter/INCREASE";
+const DECREASE = "counter/DECREASE";
+const INCREASE_BY = "counter/INCREASE_BY";
+// typesafe-actions를 사용하면 as const로 선언할 필요가 없음
 
-type CounterAction =
-  | ReturnType<typeof increase>
-  | ReturnType<typeof decrease>
-  | ReturnType<typeof increaseBy>;
-// ReturnType은 함수에서 반환하는 타입을 가져올 수 있게 해주는 유틸 타입임
-// 위에서 액션의 type을 선언할 때 as const로 선언해주지 않으면 ReturnType이 반환한 type값이 string이 된다.
-// 그러면 리듀서를 쓰기 힘듬
+export const increase = createStandardAction(INCREASE)();
+export const decrease = createStandardAction(DECREASE)();
+export const increaseBy = createStandardAction(INCREASE_BY)<number>();
+// 액션의 payload로 들어갈 값은 generic으로 설정 가능
+// payload가 필요 없다면 generic생략
+
+const actions = { increase, decrease, increaseBy };
+type CounterAction = ActionType<typeof actions>;
+// actions에 모든 액션 생성 함수를 담고 ActionType으로 감싸주기
 
 type CounterState = {
   count: number;
@@ -26,21 +28,10 @@ const initialState: CounterState = {
   count: 0
 };
 
-// 리듀서 함수임
-function counter(
-  state: CounterState = initialState,
-  action: CounterAction
-): CounterState {
-  switch (action.type) {
-    case INCREASE:
-      return { count: state.count + 1 };
-    case DECREASE:
-      return { count: state.count - 1 };
-    case INCREASE_BY:
-      return { count: state.count + action.payload };
-    default:
-      return state;
-  }
-}
+const counter = createReducer<CounterState, CounterAction>(initialState, {
+  [INCREASE]: state => ({ count: state.count + 1 }),
+  [DECREASE]: state => ({ count: state.count - 1 }),
+  [INCREASE_BY]: (state, action) => ({ count: state.count + action.payload })
+});
 
 export default counter;
