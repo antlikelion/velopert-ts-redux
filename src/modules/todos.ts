@@ -64,3 +64,5 @@ function todos(
       return state;
   }
 }
+
+export default todos;

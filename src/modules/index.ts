@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
 import counter from "./counter";
+import todos from "./todos";
 import { useSelector } from "react-redux";
 
 const rootReducer = combineReducers({
-  counter
+  counter,
+  todos
 });
 
 export default rootReducer;
