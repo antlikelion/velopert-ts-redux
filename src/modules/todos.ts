@@ -37,7 +37,7 @@ type TodosState = Todo[];
 const initialState: TodosState = [
   { id: 1, text: "타입스크립트 배우기", done: true },
   { id: 2, text: "타입스크립트와 리덕스 함께 사용해보기", done: true },
-  { id: 1, text: "투두리스트 만들기", done: false }
+  { id: 3, text: "투두리스트 만들기", done: false }
 ];
 
 function todos(
